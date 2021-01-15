@@ -38,9 +38,12 @@ class ProdutosController extends Controller {
                     
 
                 }
-            } 
-            
-        $_SESSION['flash']='Produto já existente em estoque';
+                $_SESSION['flash']='Produto já existente em estoque';
+                
+                    $this->redirect('/novo');
+            }
+
+            $_SESSION['flash']='Todos os campos devem ser preenchidos';
             $this->redirect('/novo');
        
      }
