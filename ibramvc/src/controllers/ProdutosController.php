@@ -7,13 +7,20 @@ use \src\models\Produto;
 class ProdutosController extends Controller {
 
     public function add(){
-        $this->render('add');
+        $flash='';
+        if(!empty($_SESSION['flash'])){
+            $flash = $_SESSION['flash'];
+            $_SESSION['flash'] = '';
+        }
+        $this->render('add',['flash'=>$flash]);
     }
 
     public function addAction(){
         $nome = filter_input(INPUT_POST, 'nome');
-        $valor = filter_input(INPUT_POST, 'valor');
-        $quantidade = filter_input(INPUT_POST, 'quantidade');
+        $preco = filter_input(INPUT_POST, 'valor');
+        $quant = filter_input(INPUT_POST, 'quantidade');
+        $valor = number_format($preco, 2, '.', '');
+        $quantidade = number_format($quant);
 
             if($nome && $valor && $quantidade){
                 $data = Produto::select()->where('nome', $nome)->execute();
@@ -25,12 +32,15 @@ class ProdutosController extends Controller {
                         'valor'=> $valor,
                         'quantidade'=> $quantidade
                     ])->execute();
-
-                    $this->redirect('/');
+                    
+                    $_SESSION['flash']='Produto adicionado com sucesso!';
+                    $this->redirect('/novo');
                     
 
                 }
             } 
+            
+        $_SESSION['flash']='Produto já existente em estoque';
             $this->redirect('/novo');
        
      }
@@ -61,7 +71,7 @@ class ProdutosController extends Controller {
                 ->where('id', $args['id'])
             ->execute();
 
-
+            
             $this->redirect('/');
 
         }
@@ -75,6 +85,8 @@ class ProdutosController extends Controller {
         Produto::delete()
             ->where('id', $args['id'])
             ->execute();
+
+            
         $this->redirect('/');
     }
 

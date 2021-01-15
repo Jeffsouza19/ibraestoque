@@ -1,5 +1,6 @@
 <?php $render('header'); ?>
 
+    
 <table class="table" border="1" width="100%">
     <thead class="thead-dark">
     <tr>
@@ -12,7 +13,7 @@
     <?php foreach($produtos as $produto): ?>
         <tr>
             <td><?=$produto['nome'];?></td>
-            <td><?=$produto['valor'];?></td>
+            <td>R$ <?=number_format($produto['valor'], 2, ',', '.');?></td>
             <td><?=$produto['quantidade'];?></td>
             <td>
                 <a href="<?=$base;?>/produto/<?=$produto['id'];?>/editar" >
